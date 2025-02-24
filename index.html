@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="text-align: center;margin-top: 20px;" >
+<div id="keret" ></div>
+<div id="bigKeret"></div>
+<div id="ezazVagy"></div>
+<div id="titkosUzenet"></div>
+<div id="pont"></div>
+
+<script src="adatok.js"></script>
+ <script>
+
+    let osszPont=0
+    let pont=0
+    let kiValasztott=-1 
+    let szoveg=""
+    let db=0
+    for (let i = 0; i < 2; i++) {
+        for (let j = 0; j < 4; j++) {
+           szoveg+=`<img onclick="kattintas(${db})" src="${db}.jpg" alt="" style="width:100px;margin:10px">  `
+           db+=1 
+        }
+        szoveg+=`<br>`
+    }
+    
+    document.getElementById("keret").innerHTML=szoveg
+
+
+
+    function kattintas(sorszam){
+        //alert(sorszam)
+        kiValasztott=sorszam
+        let keveres=[]
+        keveres.push(tomb[sorszam].nev1)
+        keveres.push(tomb[sorszam].nev2)
+        keveres.push(tomb[sorszam].nev3)
+
+
+        for (let i = 0; i < 100; i++) {
+           
+   
+        let r1=Math.floor(Math.random()*3)
+        let r2=Math.floor(Math.random()*3)
+        let csere=keveres[r1]
+        keveres[r1]=keveres[r2]
+        keveres[r2]=csere
+    }
+    console.log(keveres)
+
+        document.getElementById("bigKeret").innerHTML=`
+        <img src="${sorszam}.jpg" alt="" style="width:400px">
+        <br>
+        <button onclick="ellenoriz('${keveres[0]}')">${keveres[0]}</button>
+        <button onclick="ellenoriz('${keveres[1]}')">${keveres[1]}</button>
+        <button onclick="ellenoriz('${keveres[2]}')">${keveres[2]}</button>
+
+        `
+    }
+
+    function ellenoriz(felirat){
+        //alert(felirat)
+        osszPont+=1
+        if (felirat==tomb[kiValasztott].nev1) {
+            //alert("Gratulálunk, jó válasz!!!")
+            document.getElementById("ezazVagy").innerHTML="Gratulálunk, jó válasz!!!"
+            pont+=1
+            document.getElementById("pont").innerHTML="Pontszám: "+pont +" (Válaszok száma: "+osszPont+")"
+            let veletlen=Math.floor(Math.random()*tomb.length)
+            kattintas(veletlen)
+            let ujVeletlen=Math.floor(Math.random()*tombPoz.length)
+            document.getElementById("titkosUzenet").innerHTML=tombPoz[ujVeletlen]
+        }
+        else{
+            //alert("Hibás válasz, próbáld újra!!!")
+            document.getElementById("ezazVagy").innerHTML="Hibás válasz, próbáld újra!!!"
+            pont-=1
+            document.getElementById("pont").innerHTML="Pontszám: "+pont +" (Válaszok száma: "+osszPont+")"
+            let ujVeletlen=Math.floor(Math.random()*tombNeg.length)
+            document.getElementById("titkosUzenet").innerHTML=tombNeg[ujVeletlen]
+        }
+    }
+
+ </script>   
+
+</body>
+</html>
+
